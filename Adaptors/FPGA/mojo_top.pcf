@@ -1,0 +1,55 @@
+//! **************************************************************************
+// Written by: Map P.20131013 on Wed Feb 15 17:49:46 2017
+//! **************************************************************************
+
+SCHEMATIC START;
+COMP "parallel_in<10>" LOCATE = SITE "P22" LEVEL 1;
+COMP "parallel_in<11>" LOCATE = SITE "P16" LEVEL 1;
+PIN parallel_in<11>_pin<0> = BEL "parallel_in<11>" PINNAME PAD;
+PIN "parallel_in<11>_pin<0>" CLOCK_DEDICATED_ROUTE;
+COMP "parallel_in<12>" LOCATE = SITE "P17" LEVEL 1;
+COMP "parallel_in<20>" LOCATE = SITE "P143" LEVEL 1;
+COMP "parallel_in<13>" LOCATE = SITE "P14" LEVEL 1;
+COMP "parallel_in<21>" LOCATE = SITE "P144" LEVEL 1;
+COMP "parallel_in<14>" LOCATE = SITE "P15" LEVEL 1;
+COMP "parallel_in<22>" LOCATE = SITE "P141" LEVEL 1;
+COMP "parallel_in<15>" LOCATE = SITE "P11" LEVEL 1;
+COMP "parallel_in<23>" LOCATE = SITE "P142" LEVEL 1;
+COMP "parallel_in<16>" LOCATE = SITE "P8" LEVEL 1;
+COMP "parallel_in<17>" LOCATE = SITE "P5" LEVEL 1;
+COMP "parallel_in<18>" LOCATE = SITE "P6" LEVEL 1;
+COMP "parallel_in<19>" LOCATE = SITE "P2" LEVEL 1;
+COMP "clk" LOCATE = SITE "P56" LEVEL 1;
+COMP "cclk" LOCATE = SITE "P70" LEVEL 1;
+COMP "pwm_osc_00_out" LOCATE = SITE "P57" LEVEL 1;
+COMP "pwm_osc_01_out" LOCATE = SITE "P58" LEVEL 1;
+COMP "pwm_osc_02_out" LOCATE = SITE "P66" LEVEL 1;
+COMP "pwm_osc_03_out" LOCATE = SITE "P67" LEVEL 1;
+COMP "pwm_osc_04_out" LOCATE = SITE "P74" LEVEL 1;
+COMP "pwm_osc_05_out" LOCATE = SITE "P75" LEVEL 1;
+COMP "spi_sck" LOCATE = SITE "P43" LEVEL 1;
+COMP "parallel_in<0>" LOCATE = SITE "P51" LEVEL 1;
+COMP "parallel_in<1>" LOCATE = SITE "P40" LEVEL 1;
+COMP "parallel_in<2>" LOCATE = SITE "P41" LEVEL 1;
+COMP "parallel_in<3>" LOCATE = SITE "P34" LEVEL 1;
+COMP "parallel_in<4>" LOCATE = SITE "P32" LEVEL 1;
+COMP "parallel_in<5>" LOCATE = SITE "P33" LEVEL 1;
+COMP "parallel_in<6>" LOCATE = SITE "P30" LEVEL 1;
+COMP "parallel_in<7>" LOCATE = SITE "P26" LEVEL 1;
+COMP "parallel_in<8>" LOCATE = SITE "P27" LEVEL 1;
+COMP "parallel_in<9>" LOCATE = SITE "P23" LEVEL 1;
+COMP "avr_rx_busy" LOCATE = SITE "P39" LEVEL 1;
+COMP "led<0>" LOCATE = SITE "P134" LEVEL 1;
+COMP "led<1>" LOCATE = SITE "P133" LEVEL 1;
+COMP "led<2>" LOCATE = SITE "P132" LEVEL 1;
+COMP "led<7>" LOCATE = SITE "P123" LEVEL 1;
+COMP "avr_tx" LOCATE = SITE "P55" LEVEL 1;
+COMP "spi_ss" LOCATE = SITE "P48" LEVEL 1;
+COMP "spi_mosi" LOCATE = SITE "P44" LEVEL 1;
+TIMEGRP clk = BEL "clock_divider_instance/m_0" BEL
+        "clock_divider_instance/m_1" BEL "clock_divider_instance/m_2" BEL
+        "clock_divider_instance/m_3" BEL "clock_divider_instance/m_4" BEL
+        "clock_divider_instance/m_5" BEL "clk_BUFGP/BUFG";
+TS_clk = PERIOD TIMEGRP "clk" 50 MHz HIGH 50%;
+SCHEMATIC END;
+

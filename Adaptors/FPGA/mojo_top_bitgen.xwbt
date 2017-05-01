@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=/home/andy/Dropbox/projects/current/thirtybirds/Adaptors/FPGA/mojo_top.ncd
+OUTFILE=/home/andy/Dropbox/projects/current/thirtybirds/Adaptors/FPGA/mojo_top.bit
+FAMILY=Spartan6
+PART=xc6slx9-2tqg144
+WORKINGDIR=/home/andy/Dropbox/projects/current/thirtybirds/Adaptors/FPGA
+LICENSE=WebPack
+USER_INFO=175790318_0_0_378

@@ -1,0 +1,8 @@
+git
+python setuptools
+
+netifaces
+zeromq
+pip
+pyzmq
+yaml

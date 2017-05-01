@@ -1,0 +1,8 @@
+Release 14.7 Drc P.20131013 (lin)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+
+Mon Aug 31 17:38:37 2015
+
+drc -z avr_interface.ncd avr_interface.pcf
+
+DRC detected 0 errors and 0 warnings.

@@ -1,0 +1,11 @@
+xst -intstyle ise -ifn "/opt/mojo/mojo-base-project-master/syn/avr_interface.xst" -ofn "/opt/mojo/mojo-base-project-master/syn/avr_interface.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx9-tqg144-2 avr_interface.ngc avr_interface.ngd  
+map -intstyle ise -p xc6slx9-tqg144-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o avr_interface_map.ncd avr_interface.ngd avr_interface.pcf 
+par -w -intstyle ise -ol high -mt off avr_interface_map.ncd avr_interface.ncd avr_interface.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml avr_interface.twx avr_interface.ncd -o avr_interface.twr avr_interface.pcf 
+xst -intstyle ise -ifn "/opt/mojo/mojo-base-project-master/syn/avr_interface.xst" -ofn "/opt/mojo/mojo-base-project-master/syn/avr_interface.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx9-tqg144-2 avr_interface.ngc avr_interface.ngd  
+map -intstyle ise -p xc6slx9-tqg144-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o avr_interface_map.ncd avr_interface.ngd avr_interface.pcf 
+par -w -intstyle ise -ol high -mt off avr_interface_map.ncd avr_interface.ncd avr_interface.pcf 
+trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml avr_interface.twx avr_interface.ncd -o avr_interface.twr avr_interface.pcf 
+bitgen -intstyle ise -f avr_interface.ut avr_interface.ncd 

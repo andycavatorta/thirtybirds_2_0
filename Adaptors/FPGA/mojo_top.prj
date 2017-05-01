@@ -1,0 +1,3 @@
+verilog work "../../../RBK/fpga/signalGenerator/pwm_osc.v"
+verilog work "../../../RBK/fpga/signalGenerator/clock_divider.v"
+verilog work "../../../RBK/fpga/signalGenerator/src/mojo_top.v"
