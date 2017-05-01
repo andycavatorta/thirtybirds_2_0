@@ -14,7 +14,7 @@ import heartbeat
 import pubsub
 import threading
 import time
-from thirtybirds.Logs.main import Exception_Collector
+from thirtybirds_2_0.Logs.main import Exception_Collector
 
 @Exception_Collector("pubsub_callback")
 class Manager(threading.Thread):

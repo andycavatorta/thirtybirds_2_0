@@ -2,7 +2,7 @@ import netifaces
 import urllib2
 import socket
 
-from thirtybirds.Logs.main import Exception_Collector
+from thirtybirds_2_0.Logs.main import Exception_Collector
 
 @Exception_Collector()
 class Info():

@@ -3,7 +3,7 @@ import threading
 import time
 import zmq
 
-from thirtybirds.Logs.main import Exception_Collector
+from thirtybirds_2_0.Logs.main import Exception_Collector
 
 @Exception_Collector(["check_if_alive","record_heartbeat"])
 class Publisher():

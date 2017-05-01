@@ -1,18 +1,21 @@
 import commands
+import imp
 import json
 import os
 import pickle
 import sys
 
-import upgradeScripts
-from thirtybirds.Logs.main import Exception_Collector
+#import upgradeScripts
+from thirtybirds_2_0.Logs.main import Exception_Collector
 
 @Exception_Collector()
 class Updates():
     def __init__(self, local_path, runGithubSync = False, runBashScripts = False):
         self.local_path = local_path
+        self.module_name = os.path.basename(os.path.normpath(local_path))
+        self.updates_path = "%s/%s" % (self.local_path, "Updates")
         self.network_path = os.path.dirname(os.path.realpath(__file__))
-        self.version_pickle_path = "%s/%s" % (self.network_path, "version.pickle")
+        self.version_pickle_path = "%s/%s" % (self.updates_path, "version.pickle")
         self.default_version_number = 0.0
         print self.local_path, self.network_path, self.version_pickle_path
 
@@ -61,19 +64,27 @@ class Updates():
         pickle.dump(self.default_version_number, pfile)
 
     def run_uprade_scripts(self):
-        print "run_uprade_scripts 1"
-        import upgradeScripts
+        #upgradeScripts = imp.load_source('upgradeScripts', "%s/Updates/upgradeScripts.py" % (self.local_path))
+        try:
+            upgradeScripts = imp.load_source('upgradeScripts', "%s/Updates/upgradeScripts.py" % (self.local_path))
+        except Exception as e:
+            print "Path self.updates_path/%s not found" % (upgradeScripts)
+        #return
+        #import upgradeScripts
         v_l =  upgradeScripts.scripts.keys()
         v_l.sort(key=float)
         msg = []
         versionFromPickle = self.read_version_pickle()
         for version in v_l:
+            print "version", version
             if float(version) >= versionFromPickle:
                 for script in upgradeScripts.scripts[version]:
+                    print "script", script
                     status, output = self.run_bash_command(script)
                     msg.append((version, status, output))
         self.write_version_pickle(float(version)+0.01)
         return msg
+        
 
 def init(local_path, runGithubSync = False, runBashScripts = False):
     updates = Updates(local_path, runGithubSync, runBashScripts)
