@@ -33,8 +33,12 @@ class Send():
 	    except Exception as e:
 	    	print "Exception in email_simple.Send.send", e
 
-"""
 
+def init(fa, pw):
+    return Send(fromAddress=fa, password=pw)
+
+
+"""
 write Retrieve class when it's needed
 
 """
