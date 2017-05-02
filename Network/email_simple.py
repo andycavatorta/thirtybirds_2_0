@@ -8,15 +8,15 @@ from email.MIMEText import MIMEText
 
 class Send():
     def __init__(self,smptServer='smtp.gmail.com', smtpPort=587, fromAddress="", password=""):
-    try:
-        self.safety = True
-        self.messages = []
-        self.smptServer = smptServer
-        self.smtpPort = smtpPort
-        self.fromAddress = fromAddress
-        self.password = password
-    except Exception as e:
-        print "Exception in email_simple.Send.__init", e
+        try:
+            self.safety = True
+            self.messages = []
+            self.smptServer = smptServer
+            self.smtpPort = smtpPort
+            self.fromAddress = fromAddress
+            self.password = password
+        except Exception as e:
+            print "Exception in email_simple.Send.__init", e
 
     def send(self, toAddress, subject, body):
         try:
