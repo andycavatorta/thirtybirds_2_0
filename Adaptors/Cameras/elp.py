@@ -12,7 +12,9 @@ class ELP():
             if not filename.endswith(".png"):
                 filename = "%s.png" % (filename)
             image_path = "%s%s" % (self.images_folder,filename)
+            print "elp - 1 - ", image_path
             try: 
+                print "elp - 2 - "
                 cap = cv2.VideoCapture(0)
                 cap.set(3,1280)
                 cap.set(4,720)
@@ -22,9 +24,9 @@ class ELP():
                         cap.open()
                         time.sleep(1)
                 else:
-                    print filename
+                    print "elp - 2 - "
                     ret, frame = cap.read()
-                    cv2.imwrite(filename,frame)
+                    cv2.imwrite(image_path,frame)
                     #cap.release()
                     print "Picture taken", image_path
             except Exception as e:
