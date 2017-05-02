@@ -1,10 +1,9 @@
-
-
 import smtplib
 
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
- 
+from email.MIMEBase import MIMEBase
+from email import encoders
 
 class Send():
     def __init__(self,smptServer='smtp.gmail.com', smtpPort=587, fromAddress="", password=""):
@@ -18,13 +17,21 @@ class Send():
         except Exception as e:
             print "Exception in email_simple.Send.__init", e
 
-    def send(self, toAddress, subject, body):
+    def send(self, toAddress, subject, body, attachment_path=None):
         try:
             msg = MIMEMultipart()
             msg['From'] = self.fromAddress
             msg['To'] = toAddress
             msg['Subject'] = subject
             msg.attach(MIMEText(body, 'plain'))
+            if attachment_path:
+                attachment = open(attachment_path, "rb")
+                part = MIMEBase('application', 'octet-stream')
+                part.set_payload((attachment).read())
+                encoders.encode_base64(part)
+                part.add_header('Content-Disposition', "attachment; filename= %s" % attachment_path)
+                msg.attach(part)
+
             server = smtplib.SMTP(self.smptServer, self.smtpPort)
             server.starttls()
             server.login(self.fromAddress, self.password)
@@ -42,5 +49,3 @@ def init(fa, pw):
 write Retrieve class when it's needed
 
 """
-
-
