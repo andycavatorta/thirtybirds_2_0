@@ -26,7 +26,7 @@ class ELP():
                     ret, frame = cap.read()
                     cv2.imwrite(filename,frame)
                     #cap.release()
-                    print "Picture taken"
+                    print "Picture taken", image_path
             except Exception as e:
                   print "Oops! something went wrong %s" % (e)
             finally:
