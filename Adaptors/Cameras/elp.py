@@ -1,5 +1,6 @@
-import sys
 import cv2
+import sys
+import time
 
 class ELP():
     def __init__(self, images_folder):
