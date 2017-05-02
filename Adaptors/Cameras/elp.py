@@ -33,6 +33,6 @@ class ELP():
             time.sleep(1)
             return [filename, self.x_offset, self.y_offset]
 
-def init():
-    return ELP()
+def init(images_folder):
+    return ELP(images_folder)
 
