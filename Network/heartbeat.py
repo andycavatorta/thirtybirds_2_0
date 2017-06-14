@@ -3,9 +3,9 @@ import threading
 import time
 import zmq
 
-from thirtybirds_2_0.Logs.main import Exception_Collector
+#from thirtybirds_2_0.Logs.main import Exception_Collector
 
-@Exception_Collector(["check_if_alive","record_heartbeat"])
+#@Exception_Collector(["check_if_alive","record_heartbeat"])
 class Publisher():
     def __init__(self, hostname, timeout =5.0):
         self.hostname = hostname
@@ -16,7 +16,7 @@ class Publisher():
     def record_heartbeat(self):
         self.last_heartbeat = time.time()
         
-@Exception_Collector(["check_if_alive","record_heartbeat"])
+#@Exception_Collector(["check_if_alive","record_heartbeat"])
 class Heartbeat(threading.Thread):
     def __init__(self, hostname, pubsub):
         threading.Thread.__init__(self)

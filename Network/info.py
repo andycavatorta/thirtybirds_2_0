@@ -2,9 +2,9 @@ import netifaces
 import urllib2
 import socket
 
-from thirtybirds_2_0.Logs.main import Exception_Collector
+#from thirtybirds_2_0.Logs.main import Exception_Collector
 
-@Exception_Collector()
+#@Exception_Collector()
 class Info():
     def __init__(self):
         pass

@@ -6,12 +6,12 @@ import time
 import traceback
 import zmq
 
-from thirtybirds_2_0.Logs.main import Exception_Collector
+#from thirtybirds_2_0.Logs.main import Exception_Collector
 
 from thirtybirds_2_0.Network.info import init as network_info_init
 network_info = network_info_init()
 
-@Exception_Collector()
+#@Exception_Collector()
 class Subscription():
     def __init__(self, hostname, remote_ip, remote_port):
         self.hostname = hostname
@@ -19,7 +19,7 @@ class Subscription():
         self.remote_port = remote_port
         self.connected = False
         
-@Exception_Collector("send")
+#@Exception_Collector("send")
 class PubSub(threading.Thread):
     def __init__(self, hostname, publish_port, recvCallback, netStateCallback):
         threading.Thread.__init__(self)

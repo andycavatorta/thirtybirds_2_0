@@ -11,7 +11,7 @@ import time
 import yaml
 import zmq
 
-from thirtybirds_2_0.Logs.main import Exception_Collector
+#from thirtybirds_2_0.Logs.main import Exception_Collector
 
 from thirtybirds_2_0.Network.info import init as network_info_init
 network_info = network_info_init()
