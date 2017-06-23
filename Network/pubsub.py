@@ -39,6 +39,11 @@ class PubSub(threading.Thread):
             print topic, msg
         self.pub_socket.send_string("%s %s" % (topic, msg))
 
+    def send_blob(self, topic, msg):
+        if topic != "__heartbeat__":
+            print topic, '%d byte blob' % len(msg)
+        self.pub_socket.send_string("%s %s" % (topic, msg))
+
     def connect_to_publisher(self, hostname, remote_ip, remote_port):
             if hostname not in self.subscriptions:
                 self.subscriptions[hostname] = Subscription(hostname, remote_ip, remote_port)
