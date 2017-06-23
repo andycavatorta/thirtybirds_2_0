@@ -70,9 +70,8 @@ class Manager(threading.Thread):
 
     def local_discovery_status_callback(self,msg):
         #print "local_discovery_status_callback", repr(msg)
-        time.sleep(2)
+        time.sleep(0.1)
         if hasattr(self, "heartbeat"):
-            print 'in'
             if msg["status"] == "device_discovered":
                 self.heartbeat.subscribe(msg["hostname"])
                 self.pubsub.connect_to_publisher(msg["hostname"], msg["ip"], self.pubsub_pubPort)

@@ -102,7 +102,7 @@ class CallerSend(threading.Thread):
             if self.active == True:
                 #self.logger("trace","Thirtybirds.Network.discovery:CallerSend.run","calling to %s:%d" % (self.mcast_grp, self.mcast_port),None)                
                 self.mcast_sock.sendto(self.mcast_msg, (self.mcast_grp, self.mcast_port))
-            time.sleep(5)
+            time.sleep(1)
 #@Exception_Collector()
 class CallerRecv(threading.Thread):
     def __init__(self, recv_port, callback, callerSend):
