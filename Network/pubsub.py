@@ -35,8 +35,8 @@ class PubSub(threading.Thread):
         self.subscriptions = {}
 
     def send(self, topic, msg):
-        if topic != "__heartbeat__":
-            print topic, msg
+        #if topic != "__heartbeat__":
+        #    print topic, msg
         self.pub_socket.send_string("%s %s" % (topic, msg))
 
     def send_blob(self, topic, msg):
