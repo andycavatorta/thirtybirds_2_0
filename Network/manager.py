@@ -103,6 +103,9 @@ class Manager(threading.Thread):
     def send(self, topic, msg):
         self.pubsub.send(topic, msg)
 
+    def send_blob(self, topic, msg):
+        self.pubsub.send_blob(topic, msg)
+
     def run(self):
         while True:
             for publisher_hostname,val in self.publishers.items():# loop through all known publishers, check live status
