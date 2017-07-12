@@ -64,13 +64,13 @@ class Responder(threading.Thread):
                 #msg_d = json.loads(msg_json)
                 #print "discovery.py Responder.run 1:", msg_json
                 msg_d = yaml.safe_load(msg_json)
-                #print "discovery.py Responder.run 2:", msg_d 
+                #print "discovery.py Responder.run 2:", msg_d file
                 remoteIP = msg_d["ip"]
                 #print "discovery.py Responder.run 3:", remoteIP
                 msg_d["status"] = "device_discovered"
                 #print "discovery.py Responder.run 4:"
                 if self.callback:
-                    print "discovery.py Responder.run 5:"
+                    #print "discovery.py Responder.run 5:"
                     resp_d = self.callback(msg_d)
                 #print "discovery.py Responder.run 6:"
                 resp_json = json.dumps( {"ip":self.localIP,"hostname":socket.gethostname()})
