@@ -197,6 +197,14 @@ def init(
         status_callback
     ):
     print 'inside discovery init'
+    # temp test block start
+    print "hostname ", hostname
+    print "role ", role
+    print "multicastGroup ", multicastGroup
+    print "multicastPort ", multicastPort
+    print "responsePort ", responsePort
+    print "status_callback ", status_callback
+    # temp test block end
     return Discovery(
         hostname,
         role,
