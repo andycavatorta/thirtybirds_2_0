@@ -24,9 +24,12 @@ network_info = network_info_init()
 class Responder(threading.Thread):
     def __init__(self, listener_grp, listener_port, response_port, localIP, callback):
         threading.Thread.__init__(self)
+        print "discovery init 2.1..."
         self.listener_port = listener_port
         self.response_port = response_port
+        print "discovery init 2.2..."
         self.localIP = localIP
+        print "discovery init 2.3..."
         self.callback = callback
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -34,6 +37,7 @@ class Responder(threading.Thread):
         self.mreq = struct.pack("4sl", socket.inet_aton(listener_grp), socket.INADDR_ANY)
         self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, self.mreq)
         self.IpTiming = {}
+        print "discovery init 2.4..."
         #self.logger("trace","Thirtybirds.Network.discovery:Responder.__init__","Responder started",None)
     def response(self, remoteIP, msg_json): # response sends the local IP to the remote device
         print "discovery.py Responder.response 0:", remoteIP, msg_json
