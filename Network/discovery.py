@@ -31,11 +31,17 @@ class Responder(threading.Thread):
         self.localIP = localIP
         print "discovery init 2.3..."
         self.callback = callback
+        print "discovery init 2.3.1..."
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        print "discovery init 2.3.2..."
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        print "discovery init 2.3.3..."
         self.sock.bind((listener_grp, listener_port))
+        print "discovery init 2.3.4..."
         self.mreq = struct.pack("4sl", socket.inet_aton(listener_grp), socket.INADDR_ANY)
+        print "discovery init 2.3.5..."
         self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, self.mreq)
+        print "discovery init 2.3.6..."
         self.IpTiming = {}
         print "discovery init 2.4..."
         #self.logger("trace","Thirtybirds.Network.discovery:Responder.__init__","Responder started",None)
