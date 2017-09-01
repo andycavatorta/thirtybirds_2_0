@@ -47,6 +47,14 @@ class Manager(threading.Thread):
         #self.connected = False
         # initialize discovery, pubsub, heartbeat
         print "initializing self.discovery"
+        # temp test block start
+        print "self.hostname ", self.hostname
+		print "self.role ", self.role
+		print "discovery_multicastGroup ", discovery_multicastGroup
+		print "discovery_multicastPort ", discovery_multicastPort
+		print "discovery_responsePort ", discovery_responsePort
+		print "self.local_discovery_status_callback ", self.local_discovery_status_callback
+        # temp test block end
         self.discovery = discovery.init(
             self.hostname,
             self.role,
