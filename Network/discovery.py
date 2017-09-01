@@ -36,16 +36,16 @@ class Responder(threading.Thread):
         self.IpTiming = {}
         #self.logger("trace","Thirtybirds.Network.discovery:Responder.__init__","Responder started",None)
     def response(self, remoteIP, msg_json): # response sends the local IP to the remote device
-        #print "discovery.py Responder.response 0:", remoteIP, msg_json
+        print "discovery.py Responder.response 0:", remoteIP, msg_json
         if self.IpTiming.has_key(remoteIP):
-            #print "discovery.py Responder.response 1:"
+            print "discovery.py Responder.response 1:"
             if self.IpTiming[remoteIP] + 6 > time.time():
-                #print "discovery.py Responder.response 2:"
+                print "discovery.py Responder.response 2:"
                 return
         else:
-            #print "discovery.py Responder.response 3:"
+            print "discovery.py Responder.response 3:"
             self.IpTiming[remoteIP] = time.time()
-            #print "discovery.py Responder.response 4:"
+            print "discovery.py Responder.response 4:"
         context = zmq.Context()
         #print "discovery.py Responder.response 5:"
         socket = context.socket(zmq.PAIR)
