@@ -40,6 +40,9 @@ class Responder(threading.Thread):
         print "discovery init 2.3.4..."
         self.mreq = struct.pack("4sl", socket.inet_aton(listener_grp), socket.INADDR_ANY)
         print "discovery init 2.3.5..."
+        print "socket.IPPROTO_IP ", socket.IPPROTO_IPprint
+        print "socket.IP_ADD_MEMBERSHIP ", socket.IP_ADD_MEMBERSHIPprint
+        print "self.mreq ", self.mreq
         self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, self.mreq)
         print "discovery init 2.3.6..."
         self.IpTiming = {}
