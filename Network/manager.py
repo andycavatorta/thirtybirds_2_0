@@ -61,9 +61,9 @@ class Manager(threading.Thread):
             discovery_multicastGroup, 
             discovery_multicastPort, 
             discovery_responsePort, 
-            self.local_discovery_status_callback,
-            print "DONE with self.discovery"
+            self.local_discovery_status_callback
             )
+        print "DONE with self.discovery"
         print "initializing self.pubsub"
         self.pubsub = pubsub.init(
             self.hostname,
