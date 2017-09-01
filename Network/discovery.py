@@ -148,6 +148,7 @@ class Discovery():
         self.status_callback = status_callback
         self.server_ip = ""
         self.status = "" 
+        print "discovery init 1..."
 
         if self.role == "caller":
             self.callerSend = CallerSend(
@@ -165,6 +166,7 @@ class Discovery():
             self.callerSend.start()
 
         if self.role == "responder":
+            print "discovery init 2..."
             self.responder = Responder(
                 self.multicastGroup,
                 self.multicastPort, 
@@ -172,6 +174,7 @@ class Discovery():
                 network_info.getLocalIp(), 
                 self.status_callback
             )
+            print "discovery init 3..."
             self.responder.start()
 
         #logger("trace","Thirtybirds.Network.discovery:Discovery","initialized as %s" % (self.role),None)
