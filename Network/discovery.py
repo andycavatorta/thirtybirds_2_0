@@ -43,7 +43,7 @@ class Responder(threading.Thread):
         print "socket.IPPROTO_IP ", socket.IPPROTO_IP
         print "socket.IP_ADD_MEMBERSHIP ", socket.IP_ADD_MEMBERSHIP
         print "self.mreq ", self.mreq
-        print "self.sock.setsockopt business ", self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, self.mreq)
+        # print "self.sock.setsockopt business ", self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, self.mreq)
         self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, self.mreq)
         print "discovery init 2.3.6..."
         self.IpTiming = {}
