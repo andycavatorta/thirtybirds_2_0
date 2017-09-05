@@ -39,6 +39,7 @@ class Responder(threading.Thread):
         self.sock.bind((listener_grp, listener_port))
         print "discovery init 2.3.4..."
         self.mreq = struct.pack("4sl", socket.inet_aton(listener_grp), socket.INADDR_ANY)
+        print "self.mreq ", self.mreq
         print "discovery init 2.3.5..."
         print "socket.IPPROTO_IP ", socket.IPPROTO_IP
         print "socket.IP_ADD_MEMBERSHIP ", socket.IP_ADD_MEMBERSHIP
