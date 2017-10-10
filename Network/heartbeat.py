@@ -43,7 +43,7 @@ class Heartbeat(threading.Thread):
         while True: 
             print "Network.heartbeat.Heartbeat.run", self.topic, self.hostname
             self.pubsub.send(self.topic, self.hostname)
-            time.sleep(2)
+            time.sleep(15)
 
 def init(hostname, pubsub):
     print "Network.heartbeat.init"
