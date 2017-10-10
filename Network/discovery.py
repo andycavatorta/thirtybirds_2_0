@@ -109,9 +109,9 @@ class CallerRecv(threading.Thread):
             #msg_d = json.loads(msg_json)
             #print msg_json
             msg_d["status"] = "device_discovered"
+            self.callerSend.set_active(True)
             if self.callback:
                 self.callback(msg_d)
-            self.callerSend.set_active(True)
 
 ###################
 ##### WRAPPER #####
