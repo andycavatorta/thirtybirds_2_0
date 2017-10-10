@@ -6,8 +6,12 @@ import zmq
 #from thirtybirds_2_0.Logs.main import Exception_Collector
 
 #@Exception_Collector(["check_if_alive","record_heartbeat"])
+
+HEARTBEAT_SEND_PERIOD = 15
+HEARTBEAT_TIMEOUT_PERIOD = 20
+
 class Publisher():
-    def __init__(self, hostname, timeout =5.0):
+    def __init__(self, hostname, timeout = HEARTBEAT_TIMEOUT_PERIOD):
         print "Network.heartbeat.Publisher.__init__", hostname
         self.hostname = hostname
         self.timeout = timeout
@@ -43,7 +47,7 @@ class Heartbeat(threading.Thread):
         while True: 
             print "Network.heartbeat.Heartbeat.run", self.topic, self.hostname
             self.pubsub.send(self.topic, self.hostname)
-            time.sleep(15)
+            time.sleep(HEARTBEAT_SEND_PERIOD)
 
 def init(hostname, pubsub):
     print "Network.heartbeat.init"
