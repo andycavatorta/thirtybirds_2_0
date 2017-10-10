@@ -138,7 +138,7 @@ class Manager(threading.Thread):
                             self.discovery.begin()
                         #else: # if role == "responder"
                         #    self.logger("trace","Thirtybirds.Network.manager:Manager","lisening for new connection from %s" % (publisher_hostname),None)
-            time.sleep(5)
+            time.sleep(15)
 
 def init(
         hostname,
