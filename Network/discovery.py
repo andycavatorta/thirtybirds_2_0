@@ -16,6 +16,8 @@ import zmq
 from thirtybirds_2_0.Network.info import init as network_info_init
 network_info = network_info_init()
 
+CALLER_PERIOD = 10
+
 #####################
 ##### RESPONDER #####
 #####################
@@ -40,7 +42,7 @@ class Responder(threading.Thread):
         print "Network.discovery.Responder.response", remoteIP, msg_json
         #print "discovery.py Responder.response 0:", remoteIP, msg_json
         if self.IpTiming.has_key(remoteIP):
-            if self.IpTiming[remoteIP] + 6 > time.time():
+            if self.IpTiming[remoteIP] + (CALLER_PERIOD * 2) > time.time():
                 return
         else:
             self.IpTiming[remoteIP] = time.time()
@@ -85,7 +87,7 @@ class CallerSend(threading.Thread):
             if self.active == True:
                 print "Network.discovery.CallerSend.run"
                 self.mcast_sock.sendto(self.mcast_msg, (self.mcast_grp, self.mcast_port))
-            time.sleep(10)
+            time.sleep(CALLER_PERIOD)
 #@Exception_Collector()
 class CallerRecv(threading.Thread):
     def __init__(self, recv_port, callback, callerSend):
