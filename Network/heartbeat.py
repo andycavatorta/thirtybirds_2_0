@@ -7,8 +7,8 @@ import zmq
 
 #@Exception_Collector(["check_if_alive","record_heartbeat"])
 
-HEARTBEAT_SEND_PERIOD = 15
-HEARTBEAT_TIMEOUT_PERIOD = 20
+HEARTBEAT_SEND_PERIOD = 10
+HEARTBEAT_TIMEOUT_PERIOD = 15
 
 class Publisher():
     def __init__(self, hostname, timeout = HEARTBEAT_TIMEOUT_PERIOD):
