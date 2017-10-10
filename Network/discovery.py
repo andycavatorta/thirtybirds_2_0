@@ -111,7 +111,7 @@ class CallerRecv(threading.Thread):
             msg_d["status"] = "device_discovered"
             if self.callback:
                 self.callback(msg_d)
-            self.callerSend.set_active("stop")
+            self.callerSend.set_active(True)
 
 ###################
 ##### WRAPPER #####
