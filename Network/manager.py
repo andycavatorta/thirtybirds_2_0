@@ -124,7 +124,7 @@ class Manager(threading.Thread):
         while True:
             for publisher_hostname,val in self.publishers.items():# loop through all known publishers, check live status
                 alive = self.heartbeat.check_if_alive(publisher_hostname)
-                print "Network.Manager.run", publisher_hostname
+                print "Network.Manager.run", publisher_hostname, alive
                 if self.publishers[publisher_hostname]["connected"] != alive: # detect a change is heartbeat status
                     self.publishers[publisher_hostname]["connected"] = alive
                     if alive: # if a publisher has just come back online.
