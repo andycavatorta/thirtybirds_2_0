@@ -46,14 +46,14 @@ class Manager(threading.Thread):
         self.publishers = {}
         #self.connected = False
         # initialize discovery, pubsub, heartbeat
-        print "initializing self.discovery"
+        #print "initializing self.discovery"
         # temp test block start
-        print "self.hostname ", self.hostname
-        print "self.role ", self.role
-        print "discovery_multicastGroup ", discovery_multicastGroup
-        print "discovery_multicastPort ", discovery_multicastPort
-        print "discovery_responsePort ", discovery_responsePort
-        print "self.local_discovery_status_callback ", self.local_discovery_status_callback
+        #print "self.hostname ", self.hostname
+        #print "self.role ", self.role
+        #print "discovery_multicastGroup ", discovery_multicastGroup
+        #print "discovery_multicastPort ", discovery_multicastPort
+        #print "discovery_responsePort ", discovery_responsePort
+        #print "self.local_discovery_status_callback ", self.local_discovery_status_callback
         # temp test block end
         self.discovery = discovery.init(
             self.hostname,
@@ -63,15 +63,15 @@ class Manager(threading.Thread):
             discovery_responsePort, 
             self.local_discovery_status_callback
             )
-        print "DONE with self.discovery"
-        print "initializing self.pubsub"
+        #print "DONE with self.discovery"
+        #print "initializing self.pubsub"
         self.pubsub = pubsub.init(
             self.hostname,
             pubsub_pubPort, 
             self.pubsub_callback,
             self.local_discovery_status_callback
             )
-        print "initializing self.heartbeat"
+        #print "initializing self.heartbeat"
         self.heartbeat = heartbeat.init(
             self.hostname,
             self.pubsub
@@ -92,7 +92,7 @@ class Manager(threading.Thread):
             print 'else'
 
     def local_pubsub_status_callback(self,msg):
-        print "Network.Manager.local_discovery_status_callback", msg
+        print "Network.Manager.local_pubsub_status_callback", msg
         self.status_callback(msg)
 
     def local_heartbeat_status_callback(self,msg):
