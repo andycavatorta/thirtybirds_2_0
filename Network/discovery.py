@@ -24,73 +24,42 @@ network_info = network_info_init()
 class Responder(threading.Thread):
     def __init__(self, listener_grp, listener_port, response_port, localIP, callback):
         threading.Thread.__init__(self)
-        print "discovery init 2.1..."
+        print "Network.discovery.Responder.__init__"
         self.listener_port = listener_port
         self.response_port = response_port
-        print "discovery init 2.2..."
         self.localIP = localIP
-        print "discovery init 2.3..."
         self.callback = callback
-        print "discovery init 2.3.1..."
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-        print "discovery init 2.3.2..."
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        print "discovery init 2.3.3..."
         self.sock.bind((listener_grp, listener_port))
-        print "discovery init 2.3.4..."
         self.mreq = struct.pack("4sl", socket.inet_aton(listener_grp), socket.INADDR_ANY)
-        print "discovery init 2.3.5..."
-        print "socket.IPPROTO_IP ", socket.IPPROTO_IP
-        print "socket.IP_ADD_MEMBERSHIP ", socket.IP_ADD_MEMBERSHIP
-        print "self.mreq ", self.mreq
-        # print "self.sock.setsockopt business ", self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, self.mreq)
         self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, self.mreq)
-        print "discovery init 2.3.6..."
         self.IpTiming = {}
-        print "discovery init 2.4..."
         #self.logger("trace","Thirtybirds.Network.discovery:Responder.__init__","Responder started",None)
     def response(self, remoteIP, msg_json): # response sends the local IP to the remote device
-        print "discovery.py Responder.response 0:", remoteIP, msg_json
+        print "Network.discovery.Responder.response", remoteIP, msg_json
+        #print "discovery.py Responder.response 0:", remoteIP, msg_json
         if self.IpTiming.has_key(remoteIP):
-            print "discovery.py Responder.response 1:"
             if self.IpTiming[remoteIP] + 6 > time.time():
-                print "discovery.py Responder.response 2:"
                 return
         else:
-            print "discovery.py Responder.response 3:"
             self.IpTiming[remoteIP] = time.time()
-            print "discovery.py Responder.response 4:"
         context = zmq.Context()
-        #print "discovery.py Responder.response 5:"
         socket = context.socket(zmq.PAIR)
-        #print "discovery.py Responder.response 6:"
         socket.connect("tcp://%s:%s" % (remoteIP,self.response_port))
-        #print "discovery.py Responder.response 7:"
         socket.send(msg_json)
-        #print "discovery.py Responder.response 8:"
         socket.close()
-        #print "discovery.py Responder.response 9:"
     def run(self):
         while True:
-                #print "discovery.py Responder.run 0:"
                 msg_json = self.sock.recv(1024)
-                #self.logger("trace","Thirtybirds.Network.discovery:Responder.run","device_discovered:%s" % (msg_json),None)
-                #msg_d = json.loads(msg_json)
-                #print "discovery.py Responder.run 1:", msg_json
+                print "Network.discovery.Responder.run", msg_json
                 msg_d = yaml.safe_load(msg_json)
-                #print "discovery.py Responder.run 2:", msg_d file
                 remoteIP = msg_d["ip"]
-                #print "discovery.py Responder.run 3:", remoteIP
                 msg_d["status"] = "device_discovered"
-                #print "discovery.py Responder.run 4:"
                 if self.callback:
-                    #print "discovery.py Responder.run 5:"
                     resp_d = self.callback(msg_d)
-                #print "discovery.py Responder.run 6:"
                 resp_json = json.dumps( {"ip":self.localIP,"hostname":socket.gethostname()})
-                #print "discovery.py Responder.run 6:", resp_json
                 self.response(remoteIP,resp_json)
-                #print "discovery.py Responder.run 7:"
 
 ##################
 ##### CALLER #####
@@ -99,6 +68,7 @@ class Responder(threading.Thread):
 class CallerSend(threading.Thread):
     def __init__(self, localHostname, localIP, mcast_grp, mcast_port):
         threading.Thread.__init__(self)
+        print "Network.discovery.CallerSend.run", localHostname, localIP, mcast_grp, mcast_port
         self.mcast_grp = mcast_grp
         self.mcast_port = mcast_port
         self.mcast_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -107,20 +77,20 @@ class CallerSend(threading.Thread):
         self.msg_json = json.dumps(self.msg_d)
         self.mcast_msg = self.msg_json
         self.active = True
-        #self.logger("trace","Thirtybirds.Network.discovery:CallerSend.__init__","CallerSend started",None)
     def set_active(self,val):
-        #self.logger("trace","Thirtybirds.Network.discovery:CallerSend.set_active",val,None)
+        print "Network.discovery.CallerSend.set_active", val
         self.active = val
     def run(self):
         while True:
             if self.active == True:
-                #self.logger("trace","Thirtybirds.Network.discovery:CallerSend.run","calling to %s:%d" % (self.mcast_grp, self.mcast_port),None)                
+                print "Network.discovery.CallerSend.run"
                 self.mcast_sock.sendto(self.mcast_msg, (self.mcast_grp, self.mcast_port))
             time.sleep(1)
 #@Exception_Collector()
 class CallerRecv(threading.Thread):
     def __init__(self, recv_port, callback, callerSend):
         threading.Thread.__init__(self)
+        print "Network.discovery.CallerRecv.__init__"
         self.callback = callback
         self.callerSend = callerSend
         self.listen_context = zmq.Context()
@@ -132,6 +102,7 @@ class CallerRecv(threading.Thread):
     def run(self):
         while True:
             msg_json = self.listen_sock.recv()
+            print "Network.discovery.CallerRecv.run", msg_json
             msg_d = yaml.safe_load(msg_json)
             #msg_d = json.loads(msg_json)
             #print msg_json
@@ -154,6 +125,7 @@ class Discovery():
             responsePort,
             status_callback
         ):
+        print "Network.discovery.Discovery.__init__", hostname
         self.role = role
         self.hostname = hostname
         self.multicastGroup = multicastGroup
@@ -162,7 +134,6 @@ class Discovery():
         self.status_callback = status_callback
         self.server_ip = ""
         self.status = "" 
-        print "discovery init 1..."
 
         if self.role == "caller":
             self.callerSend = CallerSend(
@@ -180,7 +151,6 @@ class Discovery():
             self.callerSend.start()
 
         if self.role == "responder":
-            print "discovery init 2..."
             self.responder = Responder(
                 self.multicastGroup,
                 self.multicastPort, 
@@ -188,21 +158,24 @@ class Discovery():
                 network_info.getLocalIp(), 
                 self.status_callback
             )
-            print "discovery init 3..."
             self.responder.start()
 
         #logger("trace","Thirtybirds.Network.discovery:Discovery","initialized as %s" % (self.role),None)
 
     def begin(self):
+        print "Network.discovery.Discovery.begin"
         self.callerSend.set_active(True)
 
     def end(self):
+        print "Network.discovery.Discovery.end"
         self.callerSend.set_active(False)
 
     def get_status(self):
+        print "Network.discovery.Discovery.get_status"
         return self.status
 
     def get_server_ip(self):
+        print "Network.discovery.Discovery.get_server_ip"
         return self.server_ip
 
 def init(
@@ -213,15 +186,7 @@ def init(
         responsePort,
         status_callback
     ):
-    print 'inside discovery init'
-    # temp test block start
-    print "hostname ", hostname
-    print "role ", role
-    print "multicastGroup ", multicastGroup
-    print "multicastPort ", multicastPort
-    print "responsePort ", responsePort
-    print "status_callback ", status_callback
-    # temp test block end
+    print "Network.discovery.init"
     return Discovery(
         hostname,
         role,

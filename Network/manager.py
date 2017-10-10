@@ -33,7 +33,7 @@ class Manager(threading.Thread):
             status_callback
         ):
         threading.Thread.__init__(self)
-
+        print "Network.Manager.__init__"
         self.hostname = hostname
         self.role = role
         self.discovery_multicastGroup = discovery_multicastGroup
@@ -78,6 +78,7 @@ class Manager(threading.Thread):
             )
 
     def local_discovery_status_callback(self,msg):
+        print "Network.Manager.local_discovery_status_callback", repr(msg)
         #print "local_discovery_status_callback", repr(msg)
         time.sleep(0.1)
         if hasattr(self, "heartbeat"):
@@ -91,14 +92,16 @@ class Manager(threading.Thread):
             print 'else'
 
     def local_pubsub_status_callback(self,msg):
-        print "local_pubsub_status_callback", msg
+        print "Network.Manager.local_discovery_status_callback", msg
         self.status_callback(msg)
 
     def local_heartbeat_status_callback(self,msg):
+        print "Network.Manager.local_heartbeat_status_callback", msg
         #print "local_heartbeat_status_callback", msg
         self.status_callback(msg)
 
     def pubsub_callback(self, msg, host):
+        print "Network.Manager.pubsub_callback", msg, host
         if msg == "__heartbeat__":
             self.heartbeat.record_heartbeat(host)
         else:
@@ -106,18 +109,22 @@ class Manager(threading.Thread):
             #print "pubsub_callback", msg, host
 
     def subscribe_to_topic(self, topic):
+        print "Network.Manager.subscribe_to_topic", topic
         self.pubsub.subscribe_to_topic(topic)
 
     def send(self, topic, msg):
+        print "Network.Manager.send", topic, msg
         self.pubsub.send(topic, msg)
 
     def send_blob(self, topic, msg):
+        print "Network.Manager.send_blob", topic, msg
         self.pubsub.send_blob(topic, msg)
 
     def run(self):
         while True:
             for publisher_hostname,val in self.publishers.items():# loop through all known publishers, check live status
                 alive = self.heartbeat.check_if_alive(publisher_hostname)
+                print "Network.Manager.run", publisher_hostname
                 if self.publishers[publisher_hostname]["connected"] != alive: # detect a change is heartbeat status
                     self.publishers[publisher_hostname]["connected"] = alive
                     if alive: # if a publisher has just come back online.
@@ -144,6 +151,7 @@ def init(
         status_callback
     ):
     r = "caller" if role == "client" else "responder"
+    print "Network.Manager.init", hostname
     m = Manager(
         hostname,
         r,
