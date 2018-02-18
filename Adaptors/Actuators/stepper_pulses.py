@@ -32,7 +32,7 @@ class Channel(threading.Thread):
             GPIO.output(self.dir_pin, GPIO.LOW if speed > 0.0 else GPIO.HIGH)
         else:
             GPIO.output(self.dir_pin, GPIO.LOW if speed < 0.0 else GPIO.HIGH)
-        self.speed = speed
+        self.speed = abs(speed)
 
     def set_steps(self, steps):
         if self.steps > 0:
