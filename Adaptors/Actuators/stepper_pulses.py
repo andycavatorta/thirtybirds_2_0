@@ -73,7 +73,7 @@ channels = {}
 
 def init(channels):
     for channel in channels:
-        channels[channel.name] = Channel(
+        channels[channel["name"]] = Channel(
             channel["pulse_pin"],
             channel["dir_pin"],
             0.001 if "base_pulse_period" not in channel else channel["base_pulse_period"],
