@@ -9,6 +9,7 @@ class Channel(threading.Thread):
         self.queue = Queue.Queue()
         self.pulse_pin = pulse_pin
         self.dir_pin = dir_pin
+        self.base_pulse_period = base_pulse_period
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.pulse_pin, GPIO.OUT)
         GPIO.setup(self.dir_pin, GPIO.OUT)
@@ -59,15 +60,15 @@ class Channel(threading.Thread):
             if self.enable and self.speed != 0.0 and self.steps > 0:
                 GPIO.output(self.pulse_pin, GPIO.LOW)
                 time.sleep(period)
-                time.sleep(base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
+                time.sleep(self.base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
                 GPIO.output(self.pulse_pin, GPIO.HIGH)
                 time.sleep(period)
-                time.sleep(base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
+                time.sleep(self.base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
                 self.steps -= 1
             else:
                 if self.steps == 0 and self.steps_finished_callback:
                     self.steps_finished_callback()
-                time.sleep(base_pulse_period)
+                time.sleep(self.base_pulse_period)
 
 channels = {}
 
