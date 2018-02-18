@@ -86,6 +86,7 @@ class Manager(threading.Thread):
                 self.heartbeat.subscribe(msg["hostname"])
                 self.pubsub.connect_to_publisher(msg["hostname"], msg["ip"], self.pubsub_pubPort)
                 self.pubsub.subscribe_to_topic("__heartbeat__")
+                # NOT_THREAD_SAFE
                 self.publishers[msg["hostname"]] = {"connected":False} # connected is not redundant here.  we use its state to detect changes to heartbeat status
             self.status_callback(msg)
         else:
@@ -127,17 +128,8 @@ class Manager(threading.Thread):
                 print "Network.Manager.run", publisher_hostname, alive
                 if self.publishers[publisher_hostname]["connected"] != alive: # detect a change is heartbeat status
                     self.publishers[publisher_hostname]["connected"] = alive
-                    if alive: # if a publisher has just come back online.
-                        pass
-                        #self.logger("trace","Thirtybirds.Network.manager:Manager","publisher %s connected" % (publisher_hostname),None)
-                    else: # if a publisher has just gone offline
-                        #self.logger("trace","Thirtybirds.Network.manager:Manager","publisher %s disconected" % (publisher_hostname),None)
-                        pass
-                        if self.role == "caller":
-                            #self.logger("trace","Thirtybirds.Network.manager:Manager","starting discovery",None)
-                            self.discovery.begin()
-                        #else: # if role == "responder"
-                        #    self.logger("trace","Thirtybirds.Network.manager:Manager","lisening for new connection from %s" % (publisher_hostname),None)
+                    if alive == False and self.role == "caller": # if a publisher has just come back online.
+                        self.discovery.begin()
             time.sleep(15)
 
 def init(

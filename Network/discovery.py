@@ -37,10 +37,8 @@ class Responder(threading.Thread):
         self.mreq = struct.pack("4sl", socket.inet_aton(listener_grp), socket.INADDR_ANY)
         self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, self.mreq)
         self.IpTiming = {}
-        #self.logger("trace","Thirtybirds.Network.discovery:Responder.__init__","Responder started",None)
     def response(self, remoteIP, msg_json): # response sends the local IP to the remote device
         print "Network.discovery.Responder.response", remoteIP, msg_json
-        #print "discovery.py Responder.response 0:", remoteIP, msg_json
         if self.IpTiming.has_key(remoteIP):
             if self.IpTiming[remoteIP] + (CALLER_PERIOD * 2) > time.time():
                 return
@@ -66,7 +64,7 @@ class Responder(threading.Thread):
 ##################
 ##### CALLER #####
 ##################
-#@Exception_Collector()
+
 class CallerSend(threading.Thread):
     def __init__(self, localHostname, localIP, mcast_grp, mcast_port):
         threading.Thread.__init__(self)
@@ -80,6 +78,7 @@ class CallerSend(threading.Thread):
         self.mcast_msg = self.msg_json
         self.active = True
     def set_active(self,val):
+        # NOT_THREAD_SAFE
         print "Network.discovery.CallerSend.set_active", val
         self.active = val
     def run(self):
@@ -88,7 +87,7 @@ class CallerSend(threading.Thread):
                 print "Network.discovery.CallerSend.run"
                 self.mcast_sock.sendto(self.mcast_msg, (self.mcast_grp, self.mcast_port))
             time.sleep(CALLER_PERIOD)
-#@Exception_Collector()
+
 class CallerRecv(threading.Thread):
     def __init__(self, recv_port, callback, callerSend):
         threading.Thread.__init__(self)
@@ -100,14 +99,11 @@ class CallerRecv(threading.Thread):
         self.listen_sock.bind("tcp://*:%d" % recv_port)
         self.msg = ""
         self.server_ip = ""
-        #self.logger("trace","Thirtybirds.Network.discovery:CallerRecv.__init__","CallerRecv listening on port %d" % (recv_port),None)
     def run(self):
         while True:
             msg_json = self.listen_sock.recv()
             print "Network.discovery.CallerRecv.run", msg_json
             msg_d = yaml.safe_load(msg_json)
-            #msg_d = json.loads(msg_json)
-            #print msg_json
             msg_d["status"] = "device_discovered"
             self.callerSend.set_active(False)
             if self.callback:
@@ -116,7 +112,6 @@ class CallerRecv(threading.Thread):
 ###################
 ##### WRAPPER #####
 ###################
-#@Exception_Collector()
 class Discovery():
     def __init__(
             self,

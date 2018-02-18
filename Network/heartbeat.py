@@ -33,12 +33,15 @@ class Heartbeat(threading.Thread):
         self.pubsub = pubsub
         self.publishers = {}
     def subscribe(self, hostname):
+        # NOT_THREAD_SAFE
         print "Network.heartbeat.Heartbeat.subscribe", hostname
         self.publishers[hostname] = Publisher(hostname)
     def check_if_alive(self, hostname):
+        # NOT_THREAD_SAFE
         print "Network.heartbeat.Heartbeat.check_if_alive", hostname
         return self.publishers[hostname].check_if_alive()
     def record_heartbeat(self, hostname):
+        # NOT_THREAD_SAFE
         print "Network.heartbeat.Heartbeat.record_heartbeat", hostname
         if hostname not in self.publishers:
             self.subscribe(hostname)
