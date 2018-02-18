@@ -10,9 +10,9 @@ class Channel(threading.Thread):
         self.pulse_pin = pulse_pin
         self.dir_pin = dir_pin
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.gpio_pin, GPIO.OUT)
+        GPIO.setup(self.pulse_pin, GPIO.OUT)
         GPIO.setup(self.dir_pin, GPIO.OUT)
-        GPIO.output(self.gpio_pin, GPIO.LOW)
+        GPIO.output(self.pulse_pin, GPIO.LOW)
         GPIO.output(self.dir_pin, GPIO.LOW)
         self.backwards_orientation = backwards_orientation
         self.steps_finished_callback = steps_finished_callback
@@ -57,10 +57,10 @@ class Channel(threading.Thread):
             except Queue.Empty:
                 pass
             if self.enable and self.speed != 0.0 and self.steps > 0:
-                GPIO.output(self.gpio_pin, GPIO.LOW)
+                GPIO.output(self.pulse_pin, GPIO.LOW)
                 time.sleep(period)
                 time.sleep(base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
-                GPIO.output(self.gpio_pin, GPIO.HIGH)
+                GPIO.output(self.pulse_pin, GPIO.HIGH)
                 time.sleep(period)
                 time.sleep(base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
                 self.steps -= 1
