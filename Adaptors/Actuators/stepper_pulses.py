@@ -81,7 +81,7 @@ def init(channel_data):
             False if "steps_finished_callback" not in channel else channel["steps_finished_callback"],
             False if "backwards_orientation" not in channel else channel["backwards_orientation"]
         )
-        channels[channel.name].start()
+        channels[channel["name"]].start()
 
 # usage:
 # channels["channel_name"].set_speed(-0.5)
