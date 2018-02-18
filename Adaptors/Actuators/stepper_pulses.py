@@ -71,8 +71,8 @@ class Channel(threading.Thread):
 
 channels = {}
 
-def init(channels):
-    for channel in channels:
+def init(channel_data):
+    for channel in channel_data:
         print channel
         channels[channel["name"]] = Channel(
             channel["pulse_pin"],
