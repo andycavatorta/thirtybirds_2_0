@@ -7,7 +7,7 @@ class Channel(threading.Thread):
     def __init__(self, pulse_pin, dir_pin, base_pulse_period = 0.001, steps_finished_callback = False, backwards_orientation = False):
         threading.Thread.__init__(self)
         self.queue = Queue.Queue()
-        self.gpio_pin = gpio_pin
+        self.pulse_pin = pulse_pin
         self.dir_pin = dir_pin
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.gpio_pin, GPIO.OUT)
