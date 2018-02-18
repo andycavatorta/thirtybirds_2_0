@@ -65,7 +65,7 @@ class Channel(threading.Thread):
                 time.sleep(base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
                 self.steps -= 1
             else:
-                if self.steps = 0 and self.steps_finished_callback:
+                if self.steps == 0 and self.steps_finished_callback:
                     self.steps_finished_callback()
                 time.sleep(base_pulse_period)
 
