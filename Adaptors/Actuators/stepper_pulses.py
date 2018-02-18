@@ -4,7 +4,7 @@ import threading
 import time
 
 class Channel(threading.Thread):
-    def __init__(self, pulse_pin, dir_pin, base_pulse_period = 0.001, steps_finished_callback = False, backwards_orientation = False):
+    def __init__(self, pulse_pin, dir_pin, base_pulse_period = 0.0001, steps_finished_callback = False, backwards_orientation = False):
         threading.Thread.__init__(self)
         self.queue = Queue.Queue()
         self.pulse_pin = pulse_pin
