@@ -73,6 +73,7 @@ channels = {}
 
 def init(channels):
     for channel in channels:
+        print channel
         channels[channel["name"]] = Channel(
             channel["pulse_pin"],
             channel["dir_pin"],
