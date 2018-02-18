@@ -17,6 +17,7 @@ class Channel(threading.Thread):
         GPIO.output(self.dir_pin, GPIO.LOW)
         self.backwards_orientation = backwards_orientation
         self.steps_finished_callback = steps_finished_callback
+        self.reset_steps_finished_callback = False
         self.steps = 0
         self.speed = 0.0
         self.enable = True
@@ -37,6 +38,7 @@ class Channel(threading.Thread):
     def set_steps(self, steps):
         if self.steps > 0:
             print "notification from stepper_pulses_general.Channel: calling set_steps() while previous steps are unfinished", self.steps
+        self.reset_steps_finished_callback = True
         self.steps = steps
 
     def set_enable(self, enable): # enable:[True|False]
@@ -64,7 +66,8 @@ class Channel(threading.Thread):
                 time.sleep(self.base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
                 self.steps -= 1
             else:
-                if self.steps == 0 and self.steps_finished_callback:
+                if self.steps == 0 and self.steps_finished_callback and self.reset_steps_finished_callback:
+                    self.reset_steps_finished_callback = False
                     self.steps_finished_callback()
                 time.sleep(self.base_pulse_period)
 
