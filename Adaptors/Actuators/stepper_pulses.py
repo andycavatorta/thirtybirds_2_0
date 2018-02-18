@@ -59,10 +59,8 @@ class Channel(threading.Thread):
                 pass
             if self.enable and self.speed != 0.0 and self.steps > 0:
                 GPIO.output(self.pulse_pin, GPIO.LOW)
-                time.sleep(period)
                 time.sleep(self.base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
                 GPIO.output(self.pulse_pin, GPIO.HIGH)
-                time.sleep(period)
                 time.sleep(self.base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
                 self.steps -= 1
             else:
