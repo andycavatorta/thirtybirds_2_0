@@ -50,9 +50,12 @@ class Management(object):
         return
 
     def scripts_get_version(self, repo_name):
-        repo_path = '/home/pi/{}'.format(repo_name)
-        (updates, ghStatus, bsStatus) = updates_init(repo_path, False, False)
-        return updates.read_version_pickle()
+        try:
+            repo_path = '/home/pi/{}'.format(repo_name)
+            (updates, ghStatus, bsStatus) = updates_init(repo_path, False, False)
+            return updates.read_version_pickle()
+        catch Exception:
+            return 0
 
     def report_system_status(self, repo_name):
         return (self.hostname, self.scripts_get_version(repo_name), self.git_get_timestamp(repo_name), self.system_temp(), self.system_cpu(), self.system_uptime(), self.system_disk())
