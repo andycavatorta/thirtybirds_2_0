@@ -19,7 +19,7 @@ class Management(object):
         os.system("shutdown -h now")
 
     def system_temp(self):
-        return commands.getstatusoutput("/opt/vc/bin/vcgencmd measure_temp")[1]
+        return float(commands.getstatusoutput("/opt/vc/bin/vcgencmd measure_temp")[1][5:-2])
 
     def system_cpu(self):
         bash_output = commands.getstatusoutput("uptime")[1]
