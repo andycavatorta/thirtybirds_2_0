@@ -13,10 +13,10 @@ class Management(object):
         self.hostname = hostname
 
     def system_reboot(self):
-        os.system("reboot now")
+        os.system("sudo reboot now")
 
     def system_shutdown(self):
-        os.system("shutdown -h now")
+        os.system("sudo shutdown -h now")
 
     def system_temp(self):
         return float(commands.getstatusoutput("/opt/vc/bin/vcgencmd measure_temp")[1][5:-2])
@@ -41,8 +41,8 @@ class Management(object):
 
     def git_pull(self, repo_name):
         repo_path = '/home/pi/{}'.format(repo_name)
-        subprocess.call(['sudo', 'git', 'pull'], cwd=repo_path)
-        return 
+        #subprocess.call(['sudo', 'git', 'pull'], cwd=repo_path)
+        return commands.getstatusoutput("cd={}; git pull".format(repo_path))[1]
 
     def scripts_update(self, repo_name):
         repo_path = '/home/pi/{}'.format(repo_name)
