@@ -3,6 +3,8 @@ import commands
 import os
 
 from thirtybirds_2_0.Updates.manager import init as updates_init
+from thirtybirds_2_0.Network.info import init as network_info_init
+
 
 class Management(object):
     def __init__(self, hostname):
@@ -52,3 +54,8 @@ class Management(object):
 
     def report_system_status(self):
         return (self.hostname, self.get_update_script_version(), self.get_git_timestamp(), self.get_temp(), self.get_cpu(), self.get_uptime(), self.get_disk())
+
+def init():
+    network_info = network_info_init()
+    hostname = network_info.getHostName()
+    return Management(hostname)
