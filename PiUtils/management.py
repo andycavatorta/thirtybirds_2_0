@@ -49,15 +49,16 @@ class Management(object):
         updates_init(repo_path, False, True)
         return
 
-    def scripts_get_version(self, repo_name):
+    def (self, repo_name):
         repo_path = '/home/pi/{}'.format(repo_name)
         (updates, ghStatus, bsStatus) = updates_init(repo_path, False, False)
         return updates.read_version_pickle()
 
     def report_system_status(self):
-        return (self.hostname, self.get_update_script_version(), self.get_git_timestamp(), self.get_temp(), self.get_cpu(), self.get_uptime(), self.get_disk())
+        return (self.hostname, self.scripts_get_version(), self.git_get_timestamp(), self.system_temp(), self.system_cpu(), self.system_uptime(), self.system_disk())
 
 def init():
     network_info = network_info_init()
     hostname = network_info.getHostName()
-    return Management(hostname)
+    management = Management(hostname)
+    return management
