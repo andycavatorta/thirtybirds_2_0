@@ -54,7 +54,7 @@ class Management(object):
             repo_path = '/home/pi/{}'.format(repo_name)
             (updates, ghStatus, bsStatus) = updates_init(repo_path, False, False)
             return updates.read_version_pickle()
-        catch Exception:
+        except Exception:
             return 0
 
     def report_system_status(self, repo_name):
