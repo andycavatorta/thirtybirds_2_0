@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import subprocess
 import commands
 import os
@@ -14,7 +16,7 @@ class Management(object):
         os.system("reboot now")
 
     def system_shutdown(self):
-        os.system("shutdown –h now")
+        os.system("shutdown -h now")
 
     def system_temp(self):
         return commands.getstatusoutput("/opt/vc/bin/vcgencmd measure_temp")[1]
