@@ -59,3 +59,4 @@ def init():
     network_info = network_info_init()
     hostname = network_info.getHostName()
     return Management(hostname)
+
