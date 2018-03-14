@@ -49,7 +49,7 @@ class Management(object):
         updates_init(repo_path, False, True)
         return
 
-    def (self, repo_name):
+    def scripts_get_version(self, repo_name):
         repo_path = '/home/pi/{}'.format(repo_name)
         (updates, ghStatus, bsStatus) = updates_init(repo_path, False, False)
         return updates.read_version_pickle()
