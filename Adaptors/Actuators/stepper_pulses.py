@@ -82,7 +82,7 @@ class Motor(threading.Thread):
 
 motors = {} # global placeholder
 
-def init(channel_data):
+def init(motor_settings):
     global motors
     for motor_name in motor_settings:
         motors[motor_name] = Motor(
