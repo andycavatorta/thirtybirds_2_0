@@ -21,7 +21,7 @@ class Info():
 
     def getGlobalIp(self):
         try:
-            return urllib2.urlopen("http://icanhazip.com").read().strip()
+            return urllib2.urlopen("http://icanhazip.com", timeout=5).read().strip()
         except Exception as e:
             return False
 

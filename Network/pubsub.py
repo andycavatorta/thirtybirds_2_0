@@ -15,7 +15,7 @@ network_info = network_info_init()
 #@Exception_Collector()
 class Subscription():
     def __init__(self, hostname, remote_ip, remote_port):
-        print "Network.pubsub.Subscription.__init__",hostname, remote_ip, remote_port
+        #print "Network.pubsub.Subscription.__init__",hostname, remote_ip, remote_port
         self.hostname = hostname
         self.remote_ip = remote_ip
         self.remote_port = remote_port
@@ -61,7 +61,7 @@ class CallbackQueue(threading.Thread):
 class PubSub(threading.Thread):
     def __init__(self, hostname, publish_port, recvCallback, netStateCallback):
         threading.Thread.__init__(self)
-        print "Network.pubsub.PubSub.__init__", hostname, publish_port
+        #print "Network.pubsub.PubSub.__init__", hostname, publish_port
         self.publish_port = publish_port
         self.recvCallback = recvCallback 
         self.netStateCallback = netStateCallback 
@@ -80,7 +80,7 @@ class PubSub(threading.Thread):
         self.callbackqueue.start()
 
     def send(self, topic, msg):
-        print "Network.pubsub.PubSub.send", topic, msg
+        #print "Network.pubsub.PubSub.send", topic, msg
         #if topic != "__heartbeat__":
         #    print topic, msg
         # NOT_THREAD_SAFE
@@ -88,33 +88,33 @@ class PubSub(threading.Thread):
         #self.pub_socket.send_string("%s %s" % (topic, msg))
 
     def send_blob(self, topic, msg):
-        print "Network.pubsub.PubSub.send_blob", topic, msg
+        #print "Network.pubsub.PubSub.send_blob", topic, msg
         if topic != "__heartbeat__":
             print topic, '%d byte blob' % len(msg)
         # NOT_THREAD_SAFE
         self.pub_socket.send_string("%s %s" % (topic, msg))
 
     def connect_to_publisher(self, hostname, remote_ip, remote_port):
-        print "Network.pubsub.PubSub.connect_to_publisher", hostname, remote_ip, remote_port
+        #print "Network.pubsub.PubSub.connect_to_publisher", hostname, remote_ip, remote_port
         if hostname not in self.subscriptions:
             self.subscriptions[hostname] = Subscription(hostname, remote_ip, remote_port)
             # NOT_THREAD_SAFE
             self.sub_socket.connect("tcp://%s:%s" % (remote_ip, remote_port))
 
     def subscribe_to_topic(self, topic):
-        print "Network.pubsub.PubSub.subscribe_to_topic", topic
+        #print "Network.pubsub.PubSub.subscribe_to_topic", topic
         # NOT_THREAD_SAFE
         self.sub_socket.setsockopt(zmq.SUBSCRIBE, topic)
 
     def unsubscribe_from_topic(self, topic):
-        print "Network.pubsub.PubSub.unsubscribe_from_topic", topic
+        #print "Network.pubsub.PubSub.unsubscribe_from_topic", topic
         topic = topic.decode('ascii')
         # NOT_THREAD_SAFE
         self.sub_socket.setsockopt(zmq.UNSUBSCRIBE, topic)
 
     def run(self):
         while True:
-            print "Network.pubsub.PubSub.run"
+            #print "Network.pubsub.PubSub.run"
             incoming = self.sub_socket.recv()
             topic, msg = incoming.split(' ', 1)
             self.callbackqueue.add_to_queue(topic, msg)
