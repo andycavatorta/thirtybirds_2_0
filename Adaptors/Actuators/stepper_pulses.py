@@ -96,7 +96,7 @@ def init(motor_settings):
         motors[motor_name].start()
 
 def set(motor_name, action, data):
-    if channel_name not in channels:
+    if motor_name not in channels:
         print "Channel name not found:", motor_name
         return
     if action == "steps":
