@@ -87,11 +87,11 @@ def init(motor_settings):
     for motor_name in motor_settings:
         motors[motor_name] = Motor(
             motor_name,
-            motors[motor_name]["pulse_pin"], 
-            motors[motor_name]["dir_pin"], 
-            motors[motor_name]["base_pulse_period"], 
-            motors[motor_name]["status_callback"], 
-            motors[motor_name]["backwards_orientation"]
+            motor_settings[motor_name]["pulse_pin"], 
+            motor_settings[motor_name]["dir_pin"], 
+            motor_settings[motor_name]["base_pulse_period"], 
+            motor_settings[motor_name]["status_callback"], 
+            motor_settings[motor_name]["backwards_orientation"]
             )
         motors[motor_name].start()
 
