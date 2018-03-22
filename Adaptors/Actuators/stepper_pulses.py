@@ -3,10 +3,19 @@ import RPi.GPIO as GPIO
 import threading
 import time
 
-class Channel(threading.Thread):
-    def __init__(self, pulse_pin, dir_pin, base_pulse_period = 0.001, steps_finished_callback = False, backwards_orientation = False):
+class Motor(threading.Thread):
+    def __init__(
+            self, 
+            name,
+            pulse_pin, 
+            dir_pin, 
+            base_pulse_period = 0.001, 
+            status_callback = False, 
+            backwards_orientation = False
+        ):
         threading.Thread.__init__(self)
         self.queue = Queue.Queue()
+        self.name = name
         self.pulse_pin = pulse_pin
         self.dir_pin = dir_pin
         self.base_pulse_period = base_pulse_period
@@ -16,30 +25,28 @@ class Channel(threading.Thread):
         GPIO.output(self.pulse_pin, GPIO.LOW)
         GPIO.output(self.dir_pin, GPIO.LOW)
         self.backwards_orientation = backwards_orientation
-        self.steps_finished_callback = steps_finished_callback
-        self.reset_steps_finished_callback = False
+        self.status_callback = status_callback
         self.steps = 0
+        self.steps_cursor = 0
+        self.direction = True
         self.speed = 0.0
         self.enable = True
+ 
 
-    def set_speed(self, speed): # speed may be in range from -1.0 to 1.0
-        if speed > 1.0 or speed < -1.0:
-            print "speed value out of range"
-            return
-        if speed == 0:
-            self.speed = speed # beware divide by zero error in run()
-            return
-        if self.backwards_orientation:
-            GPIO.output(self.dir_pin, GPIO.LOW if speed > 0.0 else GPIO.HIGH)
+    def set_speed(self, speed): # valid values for speed are 0.0-1.0
+        if 0.0 <= speed <= 1.0:
+            self.speed = speed
         else:
-            GPIO.output(self.dir_pin, GPIO.LOW if speed < 0.0 else GPIO.HIGH)
-        self.speed = abs(speed)
+            print "stepper_pulses.Motor speed out of range", speed
 
-    def set_steps(self, steps):
-        if self.steps > 0:
-            print "notification from stepper_pulses_general.Channel: calling set_steps() while previous steps are unfinished", self.steps
-        self.reset_steps_finished_callback = True
-        self.steps = steps
+    def set_steps(self, steps): # valid value for steps is any integer
+        self.steps = abs(int(steps))
+        self.direction = True if steps > 0 else False
+        self.steps_cursor = 0
+        if self.backwards_orientation:
+            GPIO.output(self.dir_pin, GPIO.LOW if self.direction else GPIO.HIGH)
+        else:
+            GPIO.output(self.dir_pin, GPIO.LOW if self.direction else GPIO.HIGH)
 
     def set_enable(self, enable): # enable:[True|False]
         self.enable = enable
@@ -55,50 +62,50 @@ class Channel(threading.Thread):
                     self.set_speed(data)
                 if action == "set_steps":
                     self.set_steps(data)
+                    self.status_callback(self.name, "started", None)
                 if action == "set_enable":
                     self.set_enable(data)
             except Queue.Empty:
                 pass
-            if self.enable and self.speed != 0.0 and self.steps > 0:
+            if self.enable and self.speed > 0.0 and self.steps > self.steps_cursor:
                 GPIO.output(self.pulse_pin, GPIO.LOW)
                 time.sleep(self.base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
                 GPIO.output(self.pulse_pin, GPIO.HIGH)
                 time.sleep(self.base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
-                self.steps -= 1
+                self.steps_cursor += 1 
+                #if self.steps_cursor%10 == 0:
+                self.status_callback(self.name, "steps_cursor", self.steps_cursor)
+                if self.steps == self.steps_cursor:
+                    self.status_callback(self.name, "finished", True)
             else:
-                if self.steps == 0 and self.steps_finished_callback and self.reset_steps_finished_callback:
-                    self.reset_steps_finished_callback = False
-                    self.steps_finished_callback()
                 time.sleep(self.base_pulse_period)
 
-channels = {}
+motors = {} # global placeholder
 
 def init(channel_data):
-    for channel in channel_data:
-        print channel
-        channels[channel["name"]] = Channel(
-            channel["pulse_pin"],
-            channel["dir_pin"],
-            0.001 if "base_pulse_period" not in channel else channel["base_pulse_period"],
-            False if "steps_finished_callback" not in channel else channel["steps_finished_callback"],
-            False if "backwards_orientation" not in channel else channel["backwards_orientation"]
-        )
-        channels[channel["name"]].start()
+    global motors
+    for motor_name in motor_settings:
+        motors[motor_name] = Motor(
+            motor_name,
+            motors[motor_name]["pulse_pin"], 
+            motors[motor_name]["dir_pin"], 
+            motors[motor_name]["base_pulse_period"], 
+            motors[motor_name]["status_callback"], 
+            motors[motor_name]["backwards_orientation"]
+            )
+        motors[motor_name].start()
 
-def set(channel_name, action, data):
+def set(motor_name, action, data):
     if channel_name not in channels:
-        print "Channel name not found:", channel_name
+        print "Channel name not found:", motor_name
         return
     if action == "steps":
-        channels[channel_name].set_steps(data)
+        motors[motor_name].add_to_queue( "set_steps", data)
         return
     if action == "speed":
-        channels[channel_name].set_speed(data)
+        motors[motor_name].add_to_queue( "set_speed", data)
         return
     if action == "enable":
-        channels[channel_name].set_enable(data)
+        motors[motor_name].add_to_queue( "set_enable", data)
         return
-    print "Action not found:", action
 
-# usage:
-# channels["channel_name"].set_speed(-0.5)
