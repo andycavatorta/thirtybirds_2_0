@@ -84,7 +84,7 @@ class CallerSend(threading.Thread):
     def run(self):
         while True:
             if self.active == True:
-                print "Network.discovery.CallerSend.run"
+                #print "Network.discovery.CallerSend.run"
                 self.mcast_sock.sendto(self.mcast_msg, (self.mcast_grp, self.mcast_port))
             time.sleep(CALLER_PERIOD)
 
