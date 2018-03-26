@@ -71,15 +71,16 @@ class Motor(threading.Thread):
                 print self.name, self.speed, self.steps, self.steps_cursor, self.direction
 
                 GPIO.output(self.pulse_pin, GPIO.LOW)
-                time.sleep(self.base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
+                time.sleep(self.base_pulse_period * 10) #* (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
                 GPIO.output(self.pulse_pin, GPIO.HIGH)
-                time.sleep(self.base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
+                time.sleep(self.base_pulse_period * 10) #* (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
                 self.steps_cursor += 1 
                 #if self.steps_cursor%10 == 0:
                 self.status_callback(self.name, "steps_cursor", self.steps_cursor)
                 if self.steps == self.steps_cursor:
                     self.status_callback(self.name, "finished", True)
-            time.sleep(self.base_pulse_period*10)
+            else:
+                time.sleep(self.base_pulse_period)
 
 motors = {} # global placeholder
 
