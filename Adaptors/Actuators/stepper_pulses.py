@@ -43,10 +43,10 @@ class Motor(threading.Thread):
         self.steps = abs(int(steps))
         self.direction = True if steps > 0 else False
         self.steps_cursor = 0
-        #if self.backwards_orientation:
-        #    GPIO.output(self.dir_pin, GPIO.LOW if self.direction else GPIO.HIGH)
-        #else:
-        #    GPIO.output(self.dir_pin, GPIO.LOW if self.direction else GPIO.HIGH)
+        if self.backwards_orientation:
+            GPIO.output(self.dir_pin, GPIO.LOW if self.direction else GPIO.HIGH)
+        else:
+            GPIO.output(self.dir_pin, GPIO.LOW if self.direction else GPIO.HIGH)
 
     def set_enable(self, enable): # enable:[True|False]
         self.enable = enable
@@ -68,6 +68,8 @@ class Motor(threading.Thread):
             except Queue.Empty:
                 pass
             if self.enable and self.speed > 0.0 and self.steps > self.steps_cursor:
+                print self.name, self.speed, self.steps, self.steps_cursor, self.direction
+                
                 GPIO.output(self.pulse_pin, GPIO.LOW)
                 time.sleep(self.base_pulse_period * (1.0 / self.speed)) # actual sleep period will be longer b/c of processor scheduling
                 GPIO.output(self.pulse_pin, GPIO.HIGH)
