@@ -44,9 +44,9 @@ class Motor(threading.Thread):
         self.direction = True if steps > 0 else False
         self.steps_cursor = 0
         if self.backwards_orientation:
-            GPIO.output(self.dir_pin, GPIO.HIGH if self.direction else GPIO.LOW)
-        else:
             GPIO.output(self.dir_pin, GPIO.LOW if self.direction else GPIO.HIGH)
+        else:
+            GPIO.output(self.dir_pin, GPIO.HIGH if self.direction else GPIO.LOW)
 
     def set_enable(self, enable): # enable:[True|False]
         self.enable = enable
