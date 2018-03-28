@@ -41,12 +41,15 @@ class Motor(threading.Thread):
 
     def set_steps(self, steps): # valid value for steps is any integer
         self.steps = abs(int(steps))
-        self.direction = True if steps > 0 else False
-        self.steps_cursor = 0
-        if self.backwards_orientation:
-            GPIO.output(self.dir_pin, GPIO.LOW if self.direction else GPIO.HIGH)
+        if self.steps > 0:
+            self.direction = True if steps > 0 else False
+            self.steps_cursor = 0
+            if self.backwards_orientation:
+                GPIO.output(self.dir_pin, GPIO.LOW if self.direction else GPIO.HIGH)
+            else:
+                GPIO.output(self.dir_pin, GPIO.HIGH if self.direction else GPIO.LOW)
         else:
-            GPIO.output(self.dir_pin, GPIO.HIGH if self.direction else GPIO.LOW)
+            self.status_callback(self.name, "finished", True)
 
     def set_enable(self, enable): # enable:[True|False]
         self.enable = enable
