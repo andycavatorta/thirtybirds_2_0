@@ -32,7 +32,7 @@ class Info():
             return False
 
     def getOnlineStatus(self):
-        r = self.getGlobalIp()
+        r = self.getLocalIp()
         return False if r==False else True
 
 def init():
