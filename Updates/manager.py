@@ -20,45 +20,45 @@ class Updates():
         print self.local_path, self.network_path, self.version_pickle_path
 
     def run_bash_command(self, cmd):
-        print "run_bash_command", cmd
+        #print "run_bash_command", cmd
         status, output = commands.getstatusoutput(cmd)
         return (status, output)
         # log any errors
 
     def run_github_sync(self):
-        print "run_github_sync"
+        #print "run_github_sync"
         cmd = "cd %s && git pull -q --all -p" % (self.local_path)
         return self.run_bash_command(cmd)
 
     def make_version_pickle(self):
-        print "make_version_pickle"
+        #print "make_version_pickle"
         if not os.path.isfile(self.version_pickle_path):
-            print "make_version_pickle 2"
+            #print "make_version_pickle 2"
             pfile = open(self.version_pickle_path, "wb")
             pickle.dump(self.default_version_number, pfile)
             return True
         return False
 
     def read_version_pickle(self):
-        print "read_version_pickle"
+        #print "read_version_pickle"
         if not os.path.isfile(self.version_pickle_path):
-            print "read_version_pickle 2"
+            #print "read_version_pickle 2"
             self.make_version_pickle()
             return self.default_version_number
         return pickle.load(open(self.version_pickle_path, "r"))
 
     def write_version_pickle(self, version):
-        print "write_version_pickle 1", version
+        #print "write_version_pickle 1", version
         if not os.path.isfile(self.version_pickle_path):
-            print "write_version_pickle 2"
+            #print "write_version_pickle 2"
             self.make_version_pickle()
             return self.default_version_number
         pickle.dump(float(version),open(self.version_pickle_path, "wb"))
 
     def reset_version_pickle(self):
-        print "reset_version_pickle 1"
+        #print "reset_version_pickle 1"
         if not os.path.isfile(self.version_pickle_path):
-            print "reset_version_pickle 2"
+            #print "reset_version_pickle 2"
             self.make_version_pickle()
         pfile = open(self.version_pickle_path, "wb")
         pickle.dump(self.default_version_number, pfile)
