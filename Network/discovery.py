@@ -117,6 +117,7 @@ class Discovery():
             self,
             hostname,
             role,
+            specified_interface_name,
             multicastGroup,
             multicastPort, 
             responsePort,
@@ -125,6 +126,7 @@ class Discovery():
         print "Network.discovery.Discovery.__init__", hostname
         self.role = role
         self.hostname = hostname
+        self.specified_interface_name = specified_interface_name
         self.multicastGroup = multicastGroup
         self.multicastPort = multicastPort
         self.responsePort = responsePort
@@ -135,7 +137,7 @@ class Discovery():
         if self.role == "caller":
             self.callerSend = CallerSend(
                 self.hostname, 
-                network_info.getLocalIp(), 
+                network_info.getLocalIp(self.specified_interface_name), 
                 multicastGroup, 
                 multicastPort
             )
@@ -152,7 +154,7 @@ class Discovery():
                 self.multicastGroup,
                 self.multicastPort, 
                 self.responsePort, 
-                network_info.getLocalIp(), 
+                network_info.getLocalIp(self.specified_interface_name), 
                 self.status_callback
             )
             self.responder.start()
@@ -178,6 +180,7 @@ class Discovery():
 def init(
         hostname,
         role,
+        specified_interface_name,
         multicastGroup,
         multicastPort, 
         responsePort,
@@ -187,6 +190,7 @@ def init(
     return Discovery(
         hostname,
         role,
+        specified_interface_name,
         multicastGroup,
         multicastPort, 
         responsePort,

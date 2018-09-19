@@ -10,16 +10,15 @@
 """
 
 #/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_AL0409S4-if00-port0
-#./special_baud_rate.py <>/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_AL0409S4-if00-port0 250000
+#   `./special_baud_rate.py <>/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_AL0409S4-if00-port0 250000
 
 import time
 
 import threading
 
 from main import init as dmx_init
-
-dmx = dmx_init(devicePattern="FTDI_FT232R_USB_UART_AL0409S4",frame_size=40)
-
+                              
+dmx = dmx_init(devicePattern="usb-ENTTEC_DMX_USB_PRO_EN237782-if00-port0",frame_size=40)
 
 r = 255
 

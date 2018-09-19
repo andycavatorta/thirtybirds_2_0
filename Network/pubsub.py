@@ -59,14 +59,14 @@ class CallbackQueue(threading.Thread):
 
 #@Exception_Collector("send")
 class PubSub(threading.Thread):
-    def __init__(self, hostname, publish_port, recvCallback, netStateCallback):
+    def __init__(self, hostname, specified_interface_name, publish_port, recvCallback, netStateCallback):
         threading.Thread.__init__(self)
         #print "Network.pubsub.PubSub.__init__", hostname, publish_port
         self.publish_port = publish_port
         self.recvCallback = recvCallback 
         self.netStateCallback = netStateCallback 
         self.hostname = hostname
-        self.ip = network_info.getLocalIp()
+        self.ip = network_info.getLocalIp(specified_interface_name)
         self.context = zmq.Context()
         self.pub_socket = self.context.socket(zmq.PUB)
         self.pub_socket.bind("tcp://*:%s" % publish_port)
@@ -120,8 +120,8 @@ class PubSub(threading.Thread):
             self.callbackqueue.add_to_queue(topic, msg)
             #self.recvCallback(topic, msg)
 
-def init(hostname, publish_port, recvCallback, netStateCallback):
+def init(hostname, specified_interface_name, publish_port, recvCallback, netStateCallback):
     print "Network.pubsub.init",hostname, publish_port
-    ps = PubSub(hostname, publish_port, recvCallback, netStateCallback)
+    ps = PubSub(hostname, specified_interface_name, publish_port, recvCallback, netStateCallback)
     ps.start()
     return ps

@@ -21,8 +21,9 @@ class DMX(threading.Thread):
 
 
   def open(self):
-    self.port = serial.Serial(self.usbId, 250000, timeout=1)
-    #self.port = serial.Serial(self.usbId, 57600, timeout=1)
+    self.port = serial.Serial(self.usbId, 9600, timeout=1)
+    #self.port = serial.Serial()
+    #self.port.port = self.usbId
 
   def close(self):
     if self.port:

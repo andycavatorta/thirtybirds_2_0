@@ -8,9 +8,11 @@ import socket
 class Info():
     def __init__(self):
         pass
-    def getLocalIp(self):
-        ifaces = netifaces.interfaces()
-        for iface in ifaces:
+    def getLocalIp(self, specified_interface_name=None):
+        interface_names = netifaces.interfaces()
+        if specified_interface_name in interface_names:
+            return netifaces.ifaddresses(specified_interface_name)[netifaces.AF_INET][0]['addr']
+        for iface in interface_names:
             try:
                 ip = netifaces.ifaddresses(iface)[netifaces.AF_INET][0]['addr']
                 if ip[0:3] != "127":
