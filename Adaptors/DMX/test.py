@@ -18,7 +18,7 @@ import threading
 
 from main import init as dmx_init
                               
-dmx = dmx_init(devicePattern="usb-ENTTEC_DMX_USB_PRO_EN237782-if00-port0",frame_size=40)
+dmx = dmx_init(devicePattern="usb-ENTTEC_DMX_USB_PRO_EN254001-if00-port0",frame_size=40)
 
 r = 255
 

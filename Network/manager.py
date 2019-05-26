@@ -22,7 +22,7 @@ class Manager(threading.Thread):
             self, 
             hostname,
             role,
-            specified_interface_name,
+            #specified_interface_name,
             discovery,
             pubsub,
             heartbeat,
@@ -37,7 +37,7 @@ class Manager(threading.Thread):
         print "Network.Manager.__init__"
         self.hostname = hostname
         self.role = role
-        self.specified_interface_name = specified_interface_name
+        #self.specified_interface_name = specified_interface_name
         self.discovery_multicastGroup = discovery_multicastGroup
         self.discovery_multicastPort = discovery_multicastPort
         self.discovery_responsePort = discovery_responsePort
@@ -60,7 +60,7 @@ class Manager(threading.Thread):
         self.discovery = discovery.init(
             self.hostname,
             self.role,
-            self.specified_interface_name,
+            #self.specified_interface_name,
             discovery_multicastGroup, 
             discovery_multicastPort, 
             discovery_responsePort, 
@@ -70,7 +70,7 @@ class Manager(threading.Thread):
         #print "initializing self.pubsub"
         self.pubsub = pubsub.init(
             self.hostname,
-            self.specified_interface_name,
+            #self.specified_interface_name,
             pubsub_pubPort, 
             self.pubsub_callback,
             self.local_discovery_status_callback
@@ -139,7 +139,7 @@ class Manager(threading.Thread):
 def init(
         hostname,
         role,
-        specified_interface_name,
+        #specified_interface_name,
         discovery_multicastGroup,
         discovery_multicastPort,
         discovery_responsePort,
@@ -152,7 +152,7 @@ def init(
     m = Manager(
         hostname,
         r,
-        specified_interface_name,
+        #specified_interface_name,
         discovery,
         pubsub,
         heartbeat,

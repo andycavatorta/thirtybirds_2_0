@@ -84,7 +84,7 @@ class CallerSend(threading.Thread):
     def run(self):
         while True:
             if self.active == True:
-                #print "Network.discovery.CallerSend.run"
+                print "Network.discovery.CallerSend.run"
                 self.mcast_sock.sendto(self.mcast_msg, (self.mcast_grp, self.mcast_port))
             time.sleep(CALLER_PERIOD)
 
@@ -117,7 +117,7 @@ class Discovery():
             self,
             hostname,
             role,
-            specified_interface_name,
+            #specified_interface_name,
             multicastGroup,
             multicastPort, 
             responsePort,
@@ -126,7 +126,7 @@ class Discovery():
         print "Network.discovery.Discovery.__init__", hostname
         self.role = role
         self.hostname = hostname
-        self.specified_interface_name = specified_interface_name
+        #self.specified_interface_name = specified_interface_name
         self.multicastGroup = multicastGroup
         self.multicastPort = multicastPort
         self.responsePort = responsePort
@@ -137,7 +137,7 @@ class Discovery():
         if self.role == "caller":
             self.callerSend = CallerSend(
                 self.hostname, 
-                network_info.getLocalIp(self.specified_interface_name), 
+                #network_info.getLocalIp(self.specified_interface_name), 
                 multicastGroup, 
                 multicastPort
             )
@@ -154,12 +154,13 @@ class Discovery():
                 self.multicastGroup,
                 self.multicastPort, 
                 self.responsePort, 
-                network_info.getLocalIp(self.specified_interface_name), 
+                network_info.getLocalIp(), 
                 self.status_callback
             )
             self.responder.start()
 
         #logger("trace","Thirtybirds.Network.discovery:Discovery","initialized as %s" % (self.role),None)
+        
 
     def begin(self):
         print "Network.discovery.Discovery.begin"
@@ -180,7 +181,7 @@ class Discovery():
 def init(
         hostname,
         role,
-        specified_interface_name,
+        #specified_interface_name,
         multicastGroup,
         multicastPort, 
         responsePort,
@@ -190,7 +191,7 @@ def init(
     return Discovery(
         hostname,
         role,
-        specified_interface_name,
+        #specified_interface_name,
         multicastGroup,
         multicastPort, 
         responsePort,
