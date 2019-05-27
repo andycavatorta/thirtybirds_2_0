@@ -137,7 +137,7 @@ class Discovery():
         if self.role == "caller":
             self.callerSend = CallerSend(
                 self.hostname, 
-                #network_info.getLocalIp(self.specified_interface_name), 
+                network_info.getLocalIp(), 
                 multicastGroup, 
                 multicastPort
             )
